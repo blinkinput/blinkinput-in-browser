@@ -13,6 +13,10 @@ Using _BlinkInput_ in your web app requires a valid license key. You can obtain 
 
 For more information on how to integrate _BlinkInput_ SDK into your web app read the instructions below. Make sure you read the latest [changelog](CHANGELOG.md) for most recent changes and improvements.
 
+Check out the [live example](https://blinkinput.github.io/blinkinput-in-browser/examples/umd/index.html) to see the _BlinkInput_ SDK in action. This example is also available on [Codepen](https://codepen.io/microblink/pen/BaKbKrz).
+
+Finally, check out the [examples directory](examples) to see available examples.
+
 _BlinkInput_ In-browser SDK is meant to be used natively in a web browser. It will not work correctly within a iOS/Android WebView or NodeJS backend service. If you are looking for Cordova/PhoneGap version, please go [here](https://github.com/blinkinput/blinkinput-cordova).
 
 # Table of contents
