@@ -75,7 +75,7 @@
         loadSettings.loadProgressCallback = progress => { progressEl.value = progress; };
 
         // Set absolute location of the engine, i.e. WASM and support JS files
-        loadSettings.engineLocation = window.location.origin + "/resources";
+        loadSettings.engineLocation = "https://unpkg.com/@microblink/blinkinput-in-browser-sdk/resources/";
 
         // 3. Load SDK
         BlinkInputSDK.loadWasmModule( loadSettings ).then
