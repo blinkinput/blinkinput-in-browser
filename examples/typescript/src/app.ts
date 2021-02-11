@@ -29,7 +29,7 @@ function main()
     }
 
     // 1. It's possible to obtain a free trial license key on microblink.com
-    let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPso/w35CpCHVKSk4kBBEMlrbHMZwOjj9IPUHSL2Rwjp8hef/6d+Kf3culmRkMtIuRNLstWu60qfb2vywITcdVR1QPKHcVfB+Zc1PxKyAq0SeZ8J4+k8GOGxPH6X61jiV1/R6O4a5GM1Ur5PfpgG5q+UsyEWF6fofiPn6PtqUmUNvJi8HNTP9oo6qMw==";
+    let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPgo/w35CpCHVKSk4YEFfcPIFa1R8Ki42Zv2kFZcfHj0DNwKkqGRrM0yhtY/bFctzeIKP/ZIakb4MKvG6jpKhGQiCvRid+3VTRRhdyYqkP6N7RG9NKKkIuLHgTODm0Qxt1TYvSNNLRJ3LCawt5tseZhzKm8skJ7LcgCc/VaRvp1KfUQ/LV5Vijt0vG0DagQ==";
 
     if ( window.location.hostname === "blinkinput.github.io" )
     {
