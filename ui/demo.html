@@ -174,6 +174,13 @@
         el.licenseKey = window.licenseKey;
         el.recognizers = ['BarcodeRecognizer'];
 
+        /* [TEMPORARY FIX]
+         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+         * for examples, doesn't support COOP and COEP headers.
+         *
+         * For more information see "Integration" section in the official documentation.
+         */
+        el.wasmType = "BASIC";
 
         el.recognizerOptions = {
         'BarcodeRecognizer': {
@@ -234,7 +241,7 @@ recognizers="BarcodeRecognizer"
        *
        * For more information see "Integration" section in the official documentation.
        */
-      el.wasmType = 'BASIC';
+      el.wasmType = "BASIC";
 
       el.engineLocation = window.engineLocation;
       el.licenseKey = window.licenseKey;
@@ -299,6 +306,14 @@ recognizers="BarcodeRecognizer"
     <script type="text/javascript">
       (function (){
         const el = document.querySelector('#example-localization blinkinput-in-browser');
+
+        /* [TEMPORARY FIX]
+         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+         * for examples, doesn't support COOP and COEP headers.
+         *
+         * For more information see "Integration" section in the official documentation.
+         */
+        el.wasmType = "BASIC";
 
         el.engineLocation = window.engineLocation;
         el.licenseKey = window.licenseKey;
@@ -368,6 +383,14 @@ recognizers="BarcodeRecognizer"
     <script type="text/javascript">
       (function (){
         const el = document.querySelector('#example-localization-rtl blinkinput-in-browser');
+
+        /* [TEMPORARY FIX]
+         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+         * for examples, doesn't support COOP and COEP headers.
+         *
+         * For more information see "Integration" section in the official documentation.
+         */
+        el.wasmType = "BASIC";
 
         el.engineLocation = window.engineLocation;
         el.licenseKey = window.licenseKey;
@@ -485,11 +508,18 @@ recognizers="BarcodeRecognizer"
       (function (){
         const el = document.querySelector('#example-customization blinkinput-in-browser');
 
+        /* [TEMPORARY FIX]
+         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+         * for examples, doesn't support COOP and COEP headers.
+         *
+         * For more information see "Integration" section in the official documentation.
+         */
+        el.wasmType = "BASIC";
+
         el.engineLocation = window.engineLocation;
         el.licenseKey = window.licenseKey;
         el.recognizers = ['BarcodeRecognizer'];
-
-
+        
         el.recognizerOptions = {
         'BarcodeRecognizer': {
           shouldScanInverse: true,
