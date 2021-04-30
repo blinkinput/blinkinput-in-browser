@@ -1,5 +1,10 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 import * as Messages from "./Messages";
 import { CapturedFrame } from "../FrameCapture";
+import { LicenseErrorResponse } from "../License";
 
 import
 {
@@ -15,6 +20,7 @@ import
 import { ClearTimeoutCallback } from "../ClearTimeoutCallback";
 import { MetadataCallbacks, DisplayablePoints, DisplayableQuad } from "../MetadataCallbacks";
 import { WasmSDKLoadSettings, OptionalLoadProgressCallback } from "../WasmLoadSettings";
+import { WasmType } from "../WasmType";
 
 
 // ============================================ /
@@ -26,7 +32,10 @@ interface EventHandler
     ( msg: Messages.ResponseMessage ): void;
 }
 
-function defaultEventHandler( resolve: () => void, reject: ( reason: string | null ) => void ): EventHandler
+function defaultEventHandler(
+    resolve: () => void,
+    reject: ( reason: LicenseErrorResponse | string | null ) => void
+): EventHandler
 {
     return ( msg: Messages.ResponseMessage ) =>
     {
@@ -44,7 +53,7 @@ function defaultEventHandler( resolve: () => void, reject: ( reason: string | nu
 
 function defaultResultEventHandler(
     successResolver: EventHandler,
-    reject: ( reason: string | null ) => void
+    reject: ( reason: LicenseErrorResponse | string | null ) => void
 ): EventHandler
 {
     return ( msg: Messages.ResponseMessage ) =>
@@ -554,6 +563,7 @@ export class WasmSDKWorker implements WasmSDK
     private          clearTimeoutCallback    : ClearTimeoutCallback | null = null;
     private          recognizersWithCallbacks: Map< number, RemoteRecognizer >;
     public           showOverlay             : boolean;
+    public           loadedWasmType          : WasmType = WasmType.Basic; // will be updated after WASM gets loaded
     /* eslint-enable lines-between-class-members */
 
     private constructor
@@ -726,7 +736,9 @@ export class WasmSDKWorker implements WasmSDK
                 (
                     ( msg: Messages.ResponseMessage ) =>
                     {
-                        wasmWorker.showOverlay = ( msg as Messages.InitSuccessMessage ).showOverlay;
+                        const successMsg = msg as Messages.InitSuccessMessage;
+                        wasmWorker.showOverlay = successMsg.showOverlay;
+                        wasmWorker.loadedWasmType = successMsg.wasmType;
                         resolve( wasmWorker );
                     },
                     reject

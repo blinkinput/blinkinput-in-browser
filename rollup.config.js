@@ -44,12 +44,12 @@ const config = {
     worker: {
         input: 'src/worker.ts',
         output: {
-            file: 'resources/BlinkInputWasmSDK.worker.min.js',
+            file: 'resources/BlinkInputSDK.worker.min.js',
             format: 'iife'
         },
         plugins: [
             nodeResolve(),
-            typescript({ tsconfigOverride: { compilerOptions: { declaration: false, types: [] } } }),
+            typescript({ tsconfigOverride: { compilerOptions: { declaration: false } } }),
             babel({ babelHelpers: 'bundled' }),
             terser(terserConfig)
         ]
@@ -66,7 +66,7 @@ const config = {
             nodeResolve(),
             typescript({ useTsconfigDeclarationDir: true }),
             babel({ babelHelpers: 'bundled' }),
-            replaceWorker('resources/BlinkInputWasmSDK.worker.min.js')
+            replaceWorker('resources/BlinkInputSDK.worker.min.js')
         ]
     },
     es: {
@@ -82,7 +82,7 @@ const config = {
             nodeResolve(),
             typescript({ tsconfigOverride: { compilerOptions: { declaration: false, sourceMap: true } } }),
             babel({ babelHelpers: 'bundled' }),
-            replaceWorker('resources/BlinkInputWasmSDK.worker.min.js')
+            replaceWorker('resources/BlinkInputSDK.worker.min.js')
         ]
     },
     esModule: {
@@ -98,7 +98,7 @@ const config = {
             typescript({ tsconfigOverride: { compilerOptions: { declaration: false } } }),
             babel({ babelHelpers: 'bundled' }),
             terser(terserConfig),
-            replaceWorker('resources/BlinkInputWasmSDK.worker.min.js')
+            replaceWorker('resources/BlinkInputSDK.worker.min.js')
         ]
     },
     umdDev: {
@@ -115,7 +115,7 @@ const config = {
             nodeResolve(),
             typescript({ tsconfigOverride: { compilerOptions: { declaration: false, sourceMap: true } } }),
             babel({ babelHelpers: 'bundled' }),
-            replaceWorker('resources/BlinkInputWasmSDK.worker.min.js')
+            replaceWorker('resources/BlinkInputSDK.worker.min.js')
         ]
     },
     umdProd: {
@@ -132,7 +132,7 @@ const config = {
             typescript({ tsconfigOverride: { compilerOptions: { declaration: false } } }),
             babel({ babelHelpers: 'bundled' }),
             terser(terserConfig),
-            replaceWorker('resources/BlinkInputWasmSDK.worker.min.js')
+            replaceWorker('resources/BlinkInputSDK.worker.min.js')
         ]
     }
 }

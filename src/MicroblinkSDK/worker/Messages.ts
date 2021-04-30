@@ -1,5 +1,11 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 import { CapturedFrame } from "../FrameCapture";
 import { WasmSDKLoadSettings } from "../WasmLoadSettings";
+import { WasmType } from "../WasmType";
+import { LicenseErrorResponse } from "../License";
 
 let nextMessageID = 0;
 
@@ -54,6 +60,10 @@ export class InitMessage extends BaseRequestMessage
 
     readonly engineLocation: string;
 
+    readonly wasmType: WasmType | null;
+
+    readonly numberOfWorkers: number | null;
+
     constructor( wasmLoadSettings: WasmSDKLoadSettings, userId: string )
     {
         super( InitMessage.action );
@@ -63,6 +73,8 @@ export class InitMessage extends BaseRequestMessage
         this.registerLoadCallback = wasmLoadSettings.loadProgressCallback !== null;
         this.allowHelloMessage = wasmLoadSettings.allowHelloMessage;
         this.engineLocation = wasmLoadSettings.engineLocation;
+        this.wasmType = wasmLoadSettings.wasmType;
+        this.numberOfWorkers = wasmLoadSettings.numberOfWorkers;
     }
 }
 
@@ -300,9 +312,9 @@ export class StatusMessage implements ResponseMessage
 
     readonly success: boolean = true;
 
-    readonly error: string | null = null;
+    readonly error: LicenseErrorResponse | string | null = null;
 
-    constructor( msgID: number, success: boolean, error: string | null )
+    constructor( msgID: number, success: boolean, error: LicenseErrorResponse | string | null )
     {
         this.messageID = msgID;
         this.success = success;
@@ -318,10 +330,13 @@ export class InitSuccessMessage implements ResponseMessage
 
     readonly showOverlay: boolean = true;
 
-    constructor( msgID: number, success: boolean, showOverlay: boolean )
+    readonly wasmType: WasmType;
+
+    constructor( msgID: number, success: boolean, showOverlay: boolean, wasmType: WasmType )
     {
         this.messageID = msgID;
         this.showOverlay = showOverlay;
+        this.wasmType = wasmType;
     }
 }
 

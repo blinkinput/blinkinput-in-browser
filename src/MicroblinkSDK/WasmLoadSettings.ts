@@ -1,4 +1,9 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 import { defaultWasmModuleName } from "../defaultWasmModule";
+import { WasmType } from "./WasmType";
 
 /**
  * Function that will be called during loading of the SDK.
@@ -7,6 +12,8 @@ import { defaultWasmModuleName } from "../defaultWasmModule";
 export type LoadProgressCallback = ( loadPercentage: number ) => void;
 
 export type OptionalLoadProgressCallback = LoadProgressCallback | null;
+
+export { WasmType };
 
 /**
  * Settings object for function loadWasmModule.
@@ -32,10 +39,10 @@ export class WasmSDKLoadSettings
      * Absolute location of WASM and related JS/data files. Useful when resource files should be loaded over CDN, or
      * when web frameworks/libraries are used which store resources in specific locations, e.g. inside "assets" folder.
      *
-     * Important: if engine is hosted on another origin, CORS must be enabled between two hosts. That is, server where
-     * engine is hosted must have 'Access-Control-Allow-Origin' header for the location of the web app.
+     * Important: if the engine is hosted on another origin, CORS must be enabled between two hosts. That is, server
+     * where engine is hosted must have 'Access-Control-Allow-Origin' header for the location of the web app.
      *
-     * Important: SDK and WASM resources must be from the same version of package.
+     * Important: SDK and WASM resources must be from the same version of a package.
      *
      * Default value is empty string, i.e. "". In case of empty string, value of "window.location.origin" property is
      * going to be used.
@@ -43,9 +50,24 @@ export class WasmSDKLoadSettings
     engineLocation = "";
 
     /**
+     * Type of the WASM that will be loaded. By default, if not set, the SDK will automatically determine the best WASM
+     * to load.
+     */
+    wasmType: WasmType | null = null;
+
+    /**
+     * Defines the number of workers that will be used for multi-threaded processing
+     * of the images. If not set, the number of worker used will match the number
+     * of detected CPU cores on a device.
+     * If the browser does not support multi-threaded processing or it was deliberately
+     * disabled using the `wasmType` property, then this property will be ignored
+     */
+    numberOfWorkers: number | null = null;
+
+    /**
      * Optional callback function that will report the SDK loading progress.
      *
-     * This can be useful for displaying progress bar for users on slow connections.
+     * This can be useful for displaying progress bar to users with slow connections.
      *
      * Default value is null.
      */
