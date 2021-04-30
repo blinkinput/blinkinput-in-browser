@@ -1,5 +1,10 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 import * as Messages from "./Messages";
 import * as Utils from "../Utils";
+import * as WasmLoadUtils from "../WasmLoadUtils";
 
 import
 {
@@ -11,6 +16,8 @@ import
 import { convertEmscriptenStatusToProgress } from "../LoadProgressUtils";
 import { ClearTimeoutCallback } from "../ClearTimeoutCallback";
 import * as License from "../License";
+import { setupModule, supportsThreads, waitForThreadWorkers } from "../PThreadHelper";
+import { WasmType } from "../WasmType";
 
 interface MessageWithParameters extends Messages.RequestMessage
 {
@@ -51,7 +58,7 @@ export default class MicroblinkWorker
             switch( msg.action )
             {
                 case Messages.InitMessage.action:
-                    this.processInitMessage( msg as Messages.InitMessage );
+                    void this.processInitMessage( msg as Messages.InitMessage );
                     break;
                 case Messages.InvokeFunction.action:
                     this.processInvokeFunction( msg as Messages.InvokeFunction );
@@ -104,7 +111,7 @@ export default class MicroblinkWorker
         return handle;
     }
 
-    private notifyError( originalMessage: Messages.RequestMessage, error: string )
+    private notifyError( originalMessage: Messages.RequestMessage, error: License.LicenseErrorResponse | string )
     {
         this.context.postMessage
         (
@@ -122,9 +129,11 @@ export default class MicroblinkWorker
         this.context.postMessage( new Messages.StatusMessage( originalMessage.messageID, true, null ) );
     }
 
-    private notifyInitSuccess( originalMessage: Messages.RequestMessage, showOverlay: boolean )
+    private notifyInitSuccess( originalMessage: Messages.RequestMessage, showOverlay: boolean, wasmType: WasmType )
     {
-        this.context.postMessage( new Messages.InitSuccessMessage( originalMessage.messageID, true, showOverlay ) );
+        this.context.postMessage(
+            new Messages.InitSuccessMessage( originalMessage.messageID, true, showOverlay, wasmType )
+        );
     }
 
     /* eslint-disable @typescript-eslint/no-explicit-any,
@@ -360,18 +369,36 @@ export default class MicroblinkWorker
 
     // message process functions
 
+    private async calculateWasmType( msg: Messages.InitMessage ): Promise< WasmType >
+    {
+        return msg.wasmType !== null ? msg.wasmType : await WasmLoadUtils.detectWasmType();
+    }
+
+    private calculateEngineLocationPrefix( msg: Messages.InitMessage, wasmType: WasmType ): string
+    {
+        const engineLocation = msg.engineLocation === "" ? self.location.origin : msg.engineLocation;
+        const engineLocationPrefix = Utils.getSafePath( engineLocation, WasmLoadUtils.wasmFolder( wasmType ) );
+        if ( msg.allowHelloMessage )
+        {
+            console.log( "Engine location prefix is:", engineLocationPrefix );
+        }
+        return engineLocationPrefix;
+    }
+
     /* eslint-disable @typescript-eslint/no-explicit-any,
                       @typescript-eslint/no-unsafe-assignment,
                       @typescript-eslint/no-unsafe-call,
                       @typescript-eslint/no-unsafe-member-access */
-    private processInitMessage( msg: Messages.InitMessage )
+    private async processInitMessage( msg: Messages.InitMessage )
     {
+        const wasmType       = await this.calculateWasmType( msg );
+        const engineLocation =       this.calculateEngineLocationPrefix( msg, wasmType );
+
         // See https://emscripten.org/docs/api_reference/module.html
         let module =
         {
             locateFile: ( path: string ) =>
             {
-                const engineLocation = msg.engineLocation === "" ? self.location.origin : msg.engineLocation;
                 return Utils.getSafePath( engineLocation, path );
             }
         };
@@ -393,15 +420,32 @@ export default class MicroblinkWorker
 
         try
         {
-            const engineLocation = msg.engineLocation === "" ? self.location.origin : msg.engineLocation;
             const jsName = msg.wasmModuleName + ".js";
             const jsPath = Utils.getSafePath( engineLocation, jsName );
+
+            if ( supportsThreads( wasmType ) )
+            {
+                module = setupModule( module, msg.numberOfWorkers, jsPath );
+            }
+
             importScripts( jsPath );
             const loaderFunc = ( self as { [key: string]: any } )[ msg.wasmModuleName ];
             loaderFunc( module ).then
             (
                 async ( mbWasmModule: any ) =>
                 {
+                    if ( supportsThreads( wasmType ) )
+                    {
+                        // threads have been launched, but browser still hasn't managed to process worker creation
+                        // requests. Since license unlocking may require multiple threads to perform license key
+                        // decryption, without ready workers, a deadlock will occur.
+                        // wait for browser threads to become available
+                        if ( msg.allowHelloMessage )
+                        {
+                            console.log( "Waiting for thread workers to boot..." );
+                        }
+                        await waitForThreadWorkers( mbWasmModule );
+                    }
                     const licenseResult = await License.unlockWasmSDK
                     (
                         msg.licenseKey,
@@ -420,7 +464,7 @@ export default class MicroblinkWorker
                         {
                             this.unregisterHeartBeat();
                         }
-                        this.notifyInitSuccess( msg, !!licenseResult.showOverlay );
+                        this.notifyInitSuccess( msg, !!licenseResult.showOverlay, wasmType );
                     }
                     else
                     {
@@ -551,11 +595,14 @@ export default class MicroblinkWorker
                     const serverPermissionResult = await this.obtainNewServerPermission( false );
                     if ( serverPermissionResult !== License.ServerPermissionSubmitResultStatus.Ok )
                     {
+                        const resultStatus = License.ServerPermissionSubmitResultStatus[ serverPermissionResult ];
                         this.notifyError
                         (
                             msg,
-                            `Cannot initialize recognizers because of invalid server permission:
-                            ${License.ServerPermissionSubmitResultStatus[ serverPermissionResult ]}`
+                            new License.LicenseErrorResponse(
+                                License.LicenseErrorType[ resultStatus as keyof typeof License.LicenseErrorType ],
+                                `Cannot initialize recognizers because of invalid server permission: ${resultStatus}`
+                            )
                         );
                         return;
                     }

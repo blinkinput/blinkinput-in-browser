@@ -22,8 +22,7 @@ To run TypeScript example:
     # Build an application in folder 'dist/'
     npm run build
     ```
-2. Copy WASM and WebWorker resources which are loaded during runtime.
-    * Copy folder `node_modules/@microblink/blinkinput-in-browser-sdk/resources/` to folder `dist/`.
+2. Runtime resources are copied to `dist/` folder during build action, check `rollup.config.js` file.
 3. Serve `dist/` folder, e.g. `serve dist/`.
 
 ## ES Bundle
@@ -31,11 +30,13 @@ To run TypeScript example:
 To run ES bundle example:
 
 1. Serve `es-module/` folder, e.g. `serve es-module/`.
-    * WASM and WebWorker resources are already placed in the `es-module/` folder.
+    * Make sure to have internet connection since runtime resources are loaded from the CDN.
+    * Alternatively, change resource paths and provide JS bundles.
 
 ## UMD Bundle
 
 To run UMD bundle example (standard browser integration):
 
 1. Serve `umd/` folder, e.g. `serve umd/`.
-    * WASM and WebWorker resources are already placed in the `umd/` folder.
+    * Make sure to have internet connection since runtime resources are loaded from the CDN.
+    * Alternatively, change resource paths and provide JS bundles.

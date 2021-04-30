@@ -1,3 +1,7 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 export enum LicenseTokenState
 {
     Invalid,
@@ -17,6 +21,34 @@ export interface LicenseUnlockResult
     readonly sdkVersion                   : string;
     readonly unlockResult                 : LicenseTokenState;
     readonly licenseError                 : string;
+}
+
+export enum LicenseErrorType {
+    LicenseTokenStateInvalid              = "LICENSE_TOKEN_STATE_INVALID",
+    NetworkError                          = "NETWORK_ERROR",
+    RemoteLock                            = "REMOTE_LOCK",
+    PermissionExpired                     = "PERMISSION_EXPIRED",
+    PayloadCorrupted                      = "PAYLOAD_CORRUPTED",
+    PayloadSignatureVerificationFailed    = "PAYLOAD_SIGNATURE_VERIFICATION_FAILED",
+    IncorrectTokenState                   = "INCORRECT_TOKEN_STATE"
+}
+export class LicenseErrorResponse
+{
+    readonly code: string = "UNLOCK_LICENSE_ERROR";
+
+    type: LicenseErrorType;
+
+    message?: string | null = null;
+
+    constructor( type: LicenseErrorType, message?: string )
+    {
+        this.type = type;
+
+        if ( message )
+        {
+            this.message = message;
+        }
+    }
 }
 
 const baltazar = "https://baltazar.microblink.com/api/v1/status/check";
@@ -82,7 +114,7 @@ export interface ServerPermissionSubmitResult
 
 export interface UnlockResult
 {
-    readonly error: string | null;
+    readonly error: LicenseErrorResponse | null;
     readonly lease?: number;
     readonly showOverlay?: boolean;
 }
@@ -158,7 +190,10 @@ export async function unlockWasmSDK
     {
         case LicenseTokenState.Invalid:
             return {
-                error: unlockResult.licenseError
+                error: new LicenseErrorResponse (
+                    LicenseErrorType.LicenseTokenStateInvalid,
+                    unlockResult.licenseError
+                )
             };
         case LicenseTokenState.Valid:
             return {
@@ -186,34 +221,53 @@ export async function unlockWasmSDK
                     {
                         additionalInfo = " " + serverPermission.networkErrorDescription;
                     }
+
                     return {
-                        error: "There has been a network error while obtaining the server permission!" + additionalInfo
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.NetworkError,
+                            "There has been a network error while obtaining the server permission!" + additionalInfo
+                        )
                     };
                 }
                 case ServerPermissionSubmitResultStatus.RemoteLock:
                     return {
-                        error: "Provided license key has been remotely locked. " +
-                               "Please contact support for more information!",
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.RemoteLock,
+                            "Provided license key has been remotely locked." +
+                            "Please contact support for more information!"
+                        ),
                         lease: serverPermission.lease
                     };
                 case ServerPermissionSubmitResultStatus.PermissionExpired:
                     return {
-                        error: "Internal error (server permission expired)",
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.PermissionExpired,
+                            "Internal error (server permission expired)"
+                        ),
                         lease: serverPermission.lease
                     };
                 case ServerPermissionSubmitResultStatus.PayloadCorrupted:
                     return {
-                        error: "Server permission payload is corrupted!",
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.PayloadCorrupted,
+                            "Server permission payload is corrupted!"
+                        ),
                         lease: serverPermission.lease
                     };
                 case ServerPermissionSubmitResultStatus.PayloadSignatureVerificationFailed:
                     return {
-                        error: "Failed to verify server permission's digital signature!",
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.PayloadSignatureVerificationFailed,
+                            "Failed to verify server permission's digital signature!"
+                        ),
                         lease: serverPermission.lease
                     };
                 case ServerPermissionSubmitResultStatus.IncorrectTokenState:
                     return {
-                        error: "Internal error (Incorrect token state)",
+                        error: new LicenseErrorResponse (
+                            LicenseErrorType.IncorrectTokenState,
+                            "Internal error (Incorrect token state)"
+                        ),
                         lease: serverPermission.lease
                     };
             }

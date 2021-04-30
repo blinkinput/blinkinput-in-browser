@@ -1,6 +1,6 @@
 {
     "name": "@microblink/blinkinput-in-browser-sdk",
-    "version": "4.4.0",
+    "version": "4.4.1",
     "description": "A simple barcode scanning library for WebAssembly-enabled browsers.",
     "homepage": "https://github.com/BlinkInput/blinkinput-in-browser",
     "repository": "github:BlinkInput/blinkinput-in-browser",
@@ -19,6 +19,9 @@
     "unpkg": "dist/blinkinput-sdk.js",
     "types": "types/index.d.ts",
     "files": [
+        "ui/dist",
+        "ui/loader",
+        "ui/src",
         "dist",
         "es",
         "lib",
@@ -28,6 +31,7 @@
     ],
     "scripts": {
         "build": "rollup -c",
+        "build:ui": "cd ui && npm install && npm run build",
         "check-types": "tsc --noEmit",
         "clean": "rimraf dist es lib types",
         "lint": "eslint --ext ts -c .eslintrc.json src",
@@ -44,11 +48,14 @@
         "@typescript-eslint/eslint-plugin": "^3.4.0",
         "@typescript-eslint/parser": "^3.4.0",
         "eslint": "7.6.0",
+        "handlebars": "^4.7.7",
         "rimraf": "^3.0.2",
         "rollup": "^2.15.0",
         "rollup-plugin-terser": "^6.1.0",
         "rollup-plugin-typescript2": "^0.27.1",
         "tslib": "^2.0.0",
-        "typescript": "^3.8.3"
+        "typescript": "^3.8.3",
+        "wasm-feature-detect": "^1.2.9",
+        "yargs": "^16.2.0"
     }
 }

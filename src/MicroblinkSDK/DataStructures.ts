@@ -1,6 +1,11 @@
+/**
+ * Copyright (c) Microblink Ltd. All rights reserved.
+ */
+
 import { CapturedFrame } from "./FrameCapture";
 import { MetadataCallbacks } from "./MetadataCallbacks";
 import { ClearTimeoutCallback } from "./ClearTimeoutCallback";
+import { WasmType } from "./WasmType";
 
 // ============================================ /
 // DATA STRUCTURES                              /
@@ -58,7 +63,9 @@ export enum RecognizerResultState
     /** Something has been recognized, but some mandatory data is still missing. */
     Uncertain,
     /** All required data has been recognized. */
-    Valid
+    Valid,
+    /** Single stage of a multi-stage recognition is finished. */
+    StageValid
 }
 
 /**
@@ -220,6 +227,11 @@ export interface WasmSDK
     readonly mbWasmModule: WasmModuleProxy;
 
     showOverlay: boolean;
+
+    /**
+     * The type of the WASM that was actually loaded.
+     */
+    loadedWasmType: WasmType;
 }
 
 /**
