@@ -6,7 +6,7 @@
         <title>Example: BlinkInput UI</title>
 
         <!-- Import UI component which includes WASM library -->
-        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.1/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
+        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
 
         <style type="text/css">
             html,
@@ -52,15 +52,7 @@
                     blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01O7UhltWc6oJ6JJRnItgcFzcUbY0SgkCl5MBfS5TxIPCzI9YnM3gT/mvrLmPbfx9VTOClnf9clZNFgxPzaVRIUpXFNpbAooDiOC8XELlGhLq8uqLX0mOSzDpdboF+IGRr1p//JxjI4rzaKxO2/6ze1i2TNMIJS3VwcxxFxO3RTsuPKy962CizgNK5ch2m";
                 }
 
-                /* [TEMPORARY FIX]
-                 * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
-                 * for examples, doesn't support COOP and COEP headers.
-                 *
-                 * For more information see "Integration" section in the official documentation.
-                 */
-                blinkInput.wasmType = "BASIC";
-
-                blinkInput.engineLocation = "https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.1/resources/";
+                blinkInput.engineLocation = "https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/resources/";
                 blinkInput.recognizerOptions = {
                     'BarcodeRecognizer': {
                         shouldScanInverse: true,

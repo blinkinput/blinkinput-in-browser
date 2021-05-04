@@ -8,10 +8,8 @@ _BlinkInput_ In-browser SDK enables you to perform scans of various barcodes in 
 * [QR code](https://en.wikipedia.org/wiki/QR_code)
 * Barcodes from SIM cards
 * Automobile VIN barcodes
-* Aztec 2D barcode
 * Code 128 1D barcode
 * Code 39 1D barcode
-* Data Matrix 2D barcode
 * EAN 13 1D barcode
 * EAN 8 1D barcode
 * ITF 1D barcode

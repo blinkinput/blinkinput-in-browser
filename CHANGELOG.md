@@ -1,5 +1,10 @@
 # Release notes
 
+
+## 4.4.2
+
+* We’ve temporarily unlisted Aztec 2D and Data Matrix 2D from supported barcodes.
+
 ## 4.4.1
 
 ### UI component

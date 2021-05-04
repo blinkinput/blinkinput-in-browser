@@ -26,7 +26,7 @@
 │  ├─ email: sebmck@gmail.com
 │  ├─ path: node_modules/@babel/core
 │  └─ licenseFile: node_modules/@babel/core/LICENSE
-├─ @babel/generator@7.14.0
+├─ @babel/generator@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: Sebastian McKenzie
@@ -50,7 +50,7 @@
 │  ├─ url: https://babel.dev/team
 │  ├─ path: node_modules/@babel/helper-compilation-targets
 │  └─ licenseFile: node_modules/@babel/helper-compilation-targets/LICENSE
-├─ @babel/helper-create-class-features-plugin@7.14.0
+├─ @babel/helper-create-class-features-plugin@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: The Babel Team
@@ -178,7 +178,7 @@
 │  ├─ email: me@suchipi.com
 │  ├─ path: node_modules/@babel/highlight
 │  └─ licenseFile: node_modules/@babel/highlight/LICENSE
-├─ @babel/parser@7.14.0
+├─ @babel/parser@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: Sebastian McKenzie
@@ -350,7 +350,7 @@
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ path: node_modules/@babel/plugin-transform-block-scoped-functions
 │  └─ licenseFile: node_modules/@babel/plugin-transform-block-scoped-functions/LICENSE
-├─ @babel/plugin-transform-block-scoping@7.13.16
+├─ @babel/plugin-transform-block-scoping@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ path: node_modules/@babel/plugin-transform-block-scoping
@@ -497,7 +497,7 @@
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ path: node_modules/@babel/plugin-transform-unicode-regex
 │  └─ licenseFile: node_modules/@babel/plugin-transform-unicode-regex/LICENSE
-├─ @babel/preset-env@7.14.0
+├─ @babel/preset-env@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: Henry Zhu
@@ -529,17 +529,17 @@
 │  ├─ email: sebmck@gmail.com
 │  ├─ path: node_modules/@babel/traverse
 │  └─ licenseFile: node_modules/@babel/traverse/LICENSE
-├─ @babel/types@7.14.0
+├─ @babel/types@7.14.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/babel/babel
 │  ├─ publisher: Sebastian McKenzie
 │  ├─ email: sebmck@gmail.com
 │  ├─ path: node_modules/@babel/types
 │  └─ licenseFile: node_modules/@babel/types/LICENSE
-├─ @microblink/blinkinput-in-browser-sdk@4.4.1
+├─ @microblink/blinkinput-in-browser-sdk@4.4.2
 │  ├─ licenses: Custom: https://travis-ci.org/BlinkInput/blinkinput-in-browser.svg
 │  ├─ repository: https://github.com/BlinkInput/blinkinput-in-browser
-│  ├─ path: /opt/backup-fast/jenkins/android-arm64-pixel2-xl/root/E0/core-webassembly-sdks/SDKs/BlinkInput/blinkinput-in-browser
+│  ├─ path: /Users/lukavrtaric/microblink/projects/core-webassembly-sdks/SDKs/BlinkInput/blinkinput-in-browser
 │  └─ licenseFile: README.md
 ├─ @nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents
 │  ├─ licenses: MIT
@@ -830,7 +830,7 @@
 │  ├─ url: https://github.com/jonschlinkert
 │  ├─ path: node_modules/chokidar/node_modules/braces
 │  └─ licenseFile: node_modules/chokidar/node_modules/braces/LICENSE
-├─ browserslist@4.16.5
+├─ browserslist@4.16.6
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/browserslist/browserslist
 │  ├─ publisher: Andrey Sitnik
@@ -872,7 +872,7 @@
 │  ├─ url: sindresorhus.com
 │  ├─ path: node_modules/callsites
 │  └─ licenseFile: node_modules/callsites/license
-├─ caniuse-lite@1.0.30001219
+├─ caniuse-lite@1.0.30001221
 │  ├─ licenses: CC-BY-4.0
 │  ├─ repository: https://github.com/ben-eb/caniuse-lite
 │  ├─ publisher: Ben Briggs
@@ -1002,7 +1002,7 @@
 │  ├─ url: https://github.com/jonschlinkert
 │  ├─ path: node_modules/copy-descriptor
 │  └─ licenseFile: node_modules/copy-descriptor/LICENSE
-├─ core-js-compat@3.11.1
+├─ core-js-compat@3.11.2
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/zloirock/core-js
 │  ├─ path: node_modules/core-js-compat
@@ -1097,7 +1097,7 @@
 │  ├─ repository: https://github.com/eslint/doctrine
 │  ├─ path: node_modules/doctrine
 │  └─ licenseFile: node_modules/doctrine/LICENSE
-├─ electron-to-chromium@1.3.723
+├─ electron-to-chromium@1.3.726
 │  ├─ licenses: ISC
 │  ├─ repository: https://github.com/kilian/electron-to-chromium
 │  ├─ publisher: Kilian Valkhof
@@ -1346,6 +1346,11 @@
 │  ├─ url: http://blog.izs.me/
 │  ├─ path: node_modules/fs.realpath
 │  └─ licenseFile: node_modules/fs.realpath/LICENSE
+├─ fsevents@2.3.2
+│  ├─ licenses: MIT
+│  ├─ repository: https://github.com/fsevents/fsevents
+│  ├─ path: node_modules/fsevents
+│  └─ licenseFile: node_modules/fsevents/LICENSE
 ├─ function-bind@1.1.1
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/Raynos/function-bind
@@ -2335,7 +2340,7 @@
 │  ├─ publisher: @ezolenko
 │  ├─ path: node_modules/rollup-plugin-typescript2
 │  └─ licenseFile: node_modules/rollup-plugin-typescript2/LICENSE
-├─ rollup@2.46.0
+├─ rollup@2.47.0
 │  ├─ licenses: MIT
 │  ├─ repository: https://github.com/rollup/rollup
 │  ├─ publisher: Rich Harris
