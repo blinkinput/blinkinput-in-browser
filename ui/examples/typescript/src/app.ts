@@ -22,6 +22,14 @@ function initializeUiComponent()
         throw "Could not find UI component!";
     }
 
+    /* [TEMPORARY FIX]
+     * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+     * for examples, doesn't support COOP and COEP headers.
+     *
+     * For more information see "Integration" section in the official documentation.
+     */
+    blinkInput.wasmType = "BASIC";
+
     blinkInput.licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPgo/w35CpCHVK3E6YDX3zcxX/6UEbyceRrEl21dNHd0b83IUe+xvVBMc3yRIPZYSZf6ffXQpy0+zYD79HSxpheV6Xit2HMJcHqQFM9xrt+UWpWHV+0vk99LxyJyvlL3Sf8+R+kbdRBHmewj/Io+7uZ01w0CDGXxfQussi5Tpvk+t/spwy5BBD0wrspsvHw==";
     blinkInput.engineLocation = window.location.origin;
     blinkInput.recognizers = [ "BarcodeRecognizer" ];

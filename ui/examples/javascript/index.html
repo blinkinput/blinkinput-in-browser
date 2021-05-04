@@ -47,6 +47,14 @@
                 // Important: if attributes or properties are changed, whole component is rerendered
                 const blinkInput = document.querySelector( "blinkinput-in-browser" );
 
+                /* [TEMPORARY FIX]
+                 * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
+                 * for examples, doesn't support COOP and COEP headers.
+                 *
+                 * For more information see "Integration" section in the official documentation.
+                 */
+                blinkInput.wasmType = "BASIC";
+
                 if ( window.location.hostname === "blinkinput.github.io" )
                 {
                     blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01O7UhltWc6oJ6JJRnItgcFzcUbY0SgkCl5MBfS5TxIPCzI9YnM3gT/mvrLmPbfx9VTOClnf9clZNFgxPzaVRIUpXFNpbAooDiOC8XELlGhLq8uqLX0mOSzDpdboF+IGRr1p//JxjI4rzaKxO2/6ze1i2TNMIJS3VwcxxFxO3RTsuPKy962CizgNK5ch2m";

@@ -44,7 +44,7 @@ function main()
      *
      * For more information see "Integration" section in the official documentation.
      */
-    loadSettings.wasmType = BlinkIDSDK.WasmType.Basic;
+    loadSettings.wasmType = BlinkInputSDK.WasmType.Basic;
 
     // [OPTIONAL] Change default settings
 
