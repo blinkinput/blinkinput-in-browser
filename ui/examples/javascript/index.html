@@ -6,7 +6,8 @@
         <title>Example: BlinkInput UI</title>
 
         <!-- Import UI component which includes WASM library -->
-        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
+        <!-- Keep in mind that Unpkg CDN is used for demonstration, it's not intended to be used in production! -->
+        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.3/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
 
         <style type="text/css">
             html,
@@ -32,12 +33,27 @@
 
                 padding: 20px;
             }
+
+            blinkinput-in-browser {
+                max-width: 400px;
+
+                /* Customization of UI - see variables in src/components/shared/styles/_globals.scss */
+                /*
+                --mb-component-background: red;
+                --mb-component-action-label: none;
+                --mb-component-border-width: 0;
+                --mb-component-action-buttons-width: 100%;
+                --mb-component-action-buttons-justify-content: space-evenly;
+                --mb-component-button-size: 48px;
+                --mb-component-button-border-radius: 24px;
+                */
+            }
         </style>
     </head>
     <body>
         <!-- It's possible to obtain a free trial license key on microblink.com -->
         <blinkinput-in-browser
-            license-key="sRwAAAYJbG9jYWxob3N0r/lOPgo/w35CpCHVK3E6YDX3zcxX/6UEbyceRrEl21dNHd0b83IUe+xvVBMc3yRIPZYSZf6ffXQpy0+zYD79HSxpheV6Xit2HMJcHqQFM9xrt+UWpWHV+0vk99LxyJyvlL3Sf8+R+kbdRBHmewj/Io+7uZ01w0CDGXxfQussi5Tpvk+t/spwy5BBD0wrspsvHw=="
+            license-key="sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e"
             recognizers="BarcodeRecognizer"
         ></blinkinput-in-browser>
 
@@ -47,22 +63,15 @@
                 // Important: if attributes or properties are changed, whole component is rerendered
                 const blinkInput = document.querySelector( "blinkinput-in-browser" );
 
-                /* [TEMPORARY FIX]
-                 * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
-                 * for examples, doesn't support COOP and COEP headers.
-                 *
-                 * For more information see "Integration" section in the official documentation.
-                 */
-                blinkInput.wasmType = "BASIC";
-
                 if ( window.location.hostname === "blinkinput.github.io" )
                 {
-                    blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01O7UhltWc6oJ6JJRnItgcFzcUbY0SgkCl5MBfS5TxIPCzI9YnM3gT/mvrLmPbfx9VTOClnf9clZNFgxPzaVRIUpXFNpbAooDiOC8XELlGhLq8uqLX0mOSzDpdboF+IGRr1p//JxjI4rzaKxO2/6ze1i2TNMIJS3VwcxxFxO3RTsuPKy962CizgNK5ch2m";
+                    blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6lL3KepeLT/f3k8KEIgnpLGwKJroAvIhreH7baTWySEfwLKYZEUTY0IIqG3V1D8jclz5suOK5voJ0IAioSa9IhSO9ee0y/rvIwcTJ6nqcA5wbCNHMJSO8yOEiy6mOJZEqIFJ14o6DDxR7eDmMcV7r8H15+1U7x3QCN6TP/MNrXVTvWUyaXsx4lWSbYWA2aseF4LK/NWIbxUJXbfD6++cx5hPdtKn86i0=";
                 }
 
-                blinkInput.engineLocation = "https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/resources/";
+                blinkInput.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
+
                 blinkInput.recognizerOptions = {
-                    'BarcodeRecognizer': {
+                    "BarcodeRecognizer": {
                         shouldScanInverse: true,
                         slowerThoroughScan: true,
                         nullQuietZoneAllowed: false,

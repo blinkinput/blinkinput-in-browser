@@ -23,7 +23,8 @@
         </div>
     </body>
 
-    <script type="text/javascript" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/dist/blinkinput-sdk.js"></script>
+    <!-- Keep in mind that Unpkg CDN is used for demonstration, it's not intended to be used in production! -->
+    <script type="text/javascript" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.3/dist/blinkinput-sdk.js"></script>
     <script type="text/javascript">
     /**
      * BlinkInput In-browser SDK demo app which demonstrates how to:
@@ -55,18 +56,18 @@
         }
 
         // 1. It's possible to obtain a free trial license key on microblink.com
-        let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPgo/w35CpCHVK3E6YDX3zcxX/6UEbyceRrEl21dNHd0b83IUe+xvVBMc3yRIPZYSZf6ffXQpy0+zYD79HSxpheV6Xit2HMJcHqQFM9xrt+UWpWHV+0vk99LxyJyvlL3Sf8+R+kbdRBHmewj/Io+7uZ01w0CDGXxfQussi5Tpvk+t/spwy5BBD0wrspsvHw==";
+        let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e";
 
         if ( window.location.hostname === "blinkinput.github.io" )
         {
-            licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01O7UhltWc6oJ6JJRnItgcFzcUbY0SgkCl5MBfS5TxIPCzI9YnM3gT/mvrLmPbfx9VTOClnf9clZNFgxPzaVRIUpXFNpbAooDiOC8XELlGhLq8uqLX0mOSzDpdboF+IGRr1p//JxjI4rzaKxO2/6ze1i2TNMIJS3VwcxxFxO3RTsuPKy962CizgNK5ch2m";
+            licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6lL3KepeLT/f3k8KEIgnpLGwKJroAvIhreH7baTWySEfwLKYZEUTY0IIqG3V1D8jclz5suOK5voJ0IAioSa9IhSO9ee0y/rvIwcTJ6nqcA5wbCNHMJSO8yOEiy6mOJZEqIFJ14o6DDxR7eDmMcV7r8H15+1U7x3QCN6TP/MNrXVTvWUyaXsx4lWSbYWA2aseF4LK/NWIbxUJXbfD6++cx5hPdtKn86i0=";
         }
 
         // 2. Create instance of SDK load settings with your license key
         const loadSettings = new BlinkInputSDK.WasmSDKLoadSettings( licenseKey );
 
         /* [TEMPORARY FIX]
-         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is  used
+         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
          * for examples, doesn't support COOP and COEP headers.
          *
          * For more information see "Integration" section in the official documentation.
@@ -82,7 +83,7 @@
         loadSettings.loadProgressCallback = ( progress ) => ( progressEl.value = progress );
 
         // Set absolute location of the engine, i.e. WASM and support JS files
-        loadSettings.engineLocation = "https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.2/resources/";
+        loadSettings.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
 
         // 3. Load SDK
         BlinkInputSDK.loadWasmModule( loadSettings ).then

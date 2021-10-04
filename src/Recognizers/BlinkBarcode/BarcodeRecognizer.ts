@@ -62,17 +62,11 @@ export class BarcodeRecognizerSettings implements RecognizerSettings
      */
     readCode39AsExtendedData = false;
 
-    /** Should Aztec 2D barcode be scanned. */
-    scanAztec      = false;
-
     /** Should Code 128 1D barcode be scanned. */
     scanCode128    = false;
 
     /** Should Code 39 1D barcode be scanned. */
     scanCode39     = false;
-
-    /** Should Data Matrix 2D barcode be scanned. */
-    scanDataMatrix = false;
 
     /** Should EAN 13 1D barcode be scanned. */
     scanEAN13      = false;

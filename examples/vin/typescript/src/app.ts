@@ -33,18 +33,10 @@ function main()
     }
 
     // 1. It's possible to obtain a free trial license key on microblink.com
-    let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPgo/w35CpCHVK3E6YDX3zcxX/6UEbyceRrEl21dNHd0b83IUe+xvVBMc3yRIPZYSZf6ffXQpy0+zYD79HSxpheV6Xit2HMJcHqQFM9xrt+UWpWHV+0vk99LxyJyvlL3Sf8+R+kbdRBHmewj/Io+7uZ01w0CDGXxfQussi5Tpvk+t/spwy5BBD0wrspsvHw==";
+    const licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e";
 
     // 2. Create instance of SDK load settings with your license key
     const loadSettings = new BlinkInputSDK.WasmSDKLoadSettings( licenseKey );
-
-    /* [TEMPORARY FIX]
-     * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
-     * for examples, doesn't support COOP and COEP headers.
-     *
-     * For more information see "Integration" section in the official documentation.
-     */
-    loadSettings.wasmType = BlinkInputSDK.WasmType.Basic;
 
     // [OPTIONAL] Change default settings
 
