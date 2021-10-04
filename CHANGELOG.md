@@ -1,5 +1,24 @@
 # Release notes
 
+## 4.4.3
+
+### Platform-related SDK changes
+
+* We've improved the performance of the SDK by adding support for WebAssembly SIMD.
+    * This increases the scanning performance on compatible browsers up to 77% and up to 94% in cases when WebAssembly threads are also supported.
+    * Keep in mind that this feature requires a compatible browser (Chrome 91 and Firefox 90 or newer versions). Only `advanced` and `advanced-threads` binaries are using SIMD. In case that the browser doesn't support this feature, `basic` binary will be used.
+* We've reduced the memory fragmentation during video processing, resulting in a smaller memory footprint.
+* We've added a camera management UI module for the selection of connected cameras
+    * We've added `VideoRecognizer.changeCameraDevice` method that can be used to change the active camera device during the scanning session
+* We've improved accessibility of the UI component by changing background contrasts and increasing default font sizes
+* We've added a mechanism to automatically delete an instance of worker script in case of unsuccessful SDK initialization.
+    * New method `WasmSDK.delete()` was added for this purpose and is available on every instance of the SDK.
+* We've changed improper error handling in the `VideoRecognizer` class.
+    * From now on, it's possible to catch all errors that happen during the video recognition.
+
+### Bug fixes
+
+* We've optimised memory usage of the SDK by fixing a problem where every refresh of the UI component would result in a new instance of web worker
 
 ## 4.4.2
 

@@ -26,14 +26,19 @@ To use the UI component, JS file with custom element must be loaded and WASM eng
 
 ### <a name="installation-cdn"></a> Installation via CDN
 
+Since the UI component is published on NPM, it's possible to download the JavaScript bundles via public CDN services.
+
+However, **we strongly advise** that you host the JavaScript bundles on your infrastructure since there is no guarantee that the public CDN service has satisfactory uptime and availability throughout the world.
+
 ```html
 <!-- Load custom element via `<script>` tag with fallback for older browsers -->
-<script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
-<script nomodule src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk/ui/dist/blinkinput-in-browser.js"></script>
+<!-- IMPORTANT: change "X.Y.Z" to the version number you wish to use! -->
+<script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@X.Y.Z/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
+<script nomodule src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@X.Y.Z/ui/dist/blinkinput-in-browser.js"></script>
 
 <!-- Custom element is now available and location of WASM engine must be provided -->
-<!-- IMPORTANT: location of WASM engine must be an absolute path -->
-<blinkinput-in-browser license-key="..." engine-location="https://unpkg.com/@microblink/blinkinput-in-browser-sdk/resources/"></blinkinput-in-browser>
+<!-- IMPORTANT: location of the engine must be an absolute path. See section "WASM resources" for more information about this property. -->
+<blinkinput-in-browser license-key="..." engine-location="http://localhost/resources/"></blinkinput-in-browser>
 ```
 
 *Keep in mind that Unpkg CDN is used for demonstration, it's not intended to be used in production!*
@@ -52,9 +57,8 @@ cp -r node_modules/@microblink/blinkinput-in-browser-sdk/resources/* src/public/
 ```
 
 ```html
-<!-- Load custom element via `<script>` tag with fallback for older browsers -->
+<!-- Load custom element via `<script>` tag -->
 <script type="module" src="public/js/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
-<script nomodule src="public/js/blinkinput-in-browser.js"></script>
 
 <!-- Custom element is now available and location of WASM engine must be provided -->
 <!-- IMPORTANT: location of WASM engine must be an absolute path
@@ -66,6 +70,19 @@ cp -r node_modules/@microblink/blinkinput-in-browser-sdk/resources/* src/public/
 After adding the BlinkInput UI component to your project, make sure to include all files from BlinkInput In-browser SDK package and its `resources` folder in your distribution. Those files contain compiled WebAssembly module and support JS code.
 
 Do not add those files to the main app bundle, but rather place them on a publicly available location so SDK can load them at the appropriate time. For example, place the resources in `my-angular-app/src/assets/` folder if using `ng new`, or place the resources in `my-react-app/public/` folder if using `create-react-app`.
+
+To load WebAssembly module, use `engine-location` attribute or `engineLocation` property on the UI component.
+
+#### Downloading WASM resources from CDN
+
+If you're not using NPM, it's possible to download WASM resources from public CDN services.
+
+For example, all versions of ${libName} In-browser SDK are available on Unpkg CDN:
+
+* Visit `https://unpkg.com/browse/@microblink/blinkinput-in-browser-sdk@X.Y.Z/resources/` (change "X.Y.Z" to the version number you wish to use).
+* Download the whole folder.
+* Save everything in the local `resources` folder which is available through HTTP/S.
+* Point the engine to that location with `engine-location` attribute or `engineLocation` property on the UI component.
 
 ## <a name="usage"></a> Usage
 

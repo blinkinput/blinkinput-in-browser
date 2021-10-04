@@ -143,13 +143,15 @@ $rectangle-scanning-line-animation-duration: 2400ms;
 }
 
 // Shape & states
-:host .rectangle {
+:host #card-payment .rectangle {
   box-sizing: border-box;
   position: relative;
   background-color: transparent;
   background-position: center;
   background-repeat: no-repeat;
   transition: all .3s ease-in;
+  order: 1;
+  flex: 0 1 327px;
 
   &__cursor {
     width: calc(100% + 4px);
@@ -187,8 +189,8 @@ $rectangle-scanning-line-animation-duration: 2400ms;
       &::before {
         top: 0;
         left: 0;
-        border-top: 4px solid rgba(#fff, 0.5);
-        border-left: 4px solid rgba(#fff, 0.5);
+        border-top: 4px solid rgb(255, 255, 255);
+        border-left: 4px solid rgb(255, 255, 255);
         border-top-left-radius: 8px;
         box-shadow: inset 3px 3px 8px -6px rgb(0 0 0 / 20%), -3px -3px 8px -6px rgb(0 0 0 / 20%);
         transition: border-color .15s linear;
@@ -203,8 +205,8 @@ $rectangle-scanning-line-animation-duration: 2400ms;
       &::before {
         top: 0;
         right: 0;
-        border-top: 4px solid rgba(#fff, 0.5);
-        border-right: 4px solid rgba(#fff, 0.5);
+        border-top: 4px solid rgb(255, 255, 255);
+        border-right: 4px solid rgb(255, 255, 255);
         border-top-right-radius: 8px;
         box-shadow: inset -3px 3px 8px -6px rgb(0 0 0 / 20%), 3px -3px 8px -6px rgb(0 0 0 / 20%);
         transition: border-color .15s linear;
@@ -219,8 +221,8 @@ $rectangle-scanning-line-animation-duration: 2400ms;
       &::before {
         bottom: 0;
         right: 0;
-        border-bottom: 4px solid rgba(#fff, 0.5);
-        border-right: 4px solid rgba(#fff, 0.5);
+        border-bottom: 4px solid rgb(255, 255, 255);
+        border-right: 4px solid rgb(255, 255, 255);
         border-bottom-right-radius: 8px;
         box-shadow: inset -3px -3px 8px -6px rgb(0 0 0 / 20%), 3px 3px 8px -6px rgb(0 0 0 / 20%);
         transition: border-color .15s linear;
@@ -235,8 +237,8 @@ $rectangle-scanning-line-animation-duration: 2400ms;
       &::before {
         bottom: 0;
         left: 0;
-        border-bottom: 4px solid rgba(#fff, 0.5);
-        border-left: 4px solid rgba(#fff, 0.5);
+        border-bottom: 4px solid rgb(255, 255, 255);
+        border-left: 4px solid rgb(255, 255, 255);
         border-bottom-left-radius: 8px;
         box-shadow: inset 3px -3px 8px -6px rgb(0 0 0 / 20%), -3px 3px 8px -6px rgb(0 0 0 / 20%);
         transition: border-color .15s linear;
@@ -344,7 +346,7 @@ $rectangle-scanning-line-animation-duration: 2400ms;
   top: -125px;
 
   background: radial-gradient(100% 100% at 49.85% 100%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
-  filter: blur(4px);
+  filter: blur(var(--mb-blur-scanning-line));
 
   &.is-active {
     opacity: 1;
