@@ -30,7 +30,7 @@
 | `rawRecognizers`                   | `recognizers`                          | List of recognizers which should be used.  Available recognizers for BlinkInput:  - BarcodeRecognizer - SimNumberRecognizer - VinNumberRecognizer  Recognizers can be defined by setting HTML attribute "recognizers", for example:  `<blinkinput-in-browser recognizers="BarcodeRecognizer"></blinkinput-in-browser>`                                                                                                                                                                                                                                                                                                                                          | `string`                     | `undefined` |
 | `rawTranslations`                  | `translations`                         | Set custom translations for UI component. List of available translation keys can be found in `src/utils/translation.service.ts` file.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `string`                     | `undefined` |
 | `recognitionTimeout`               | `recognition-timeout`                  | Amount of time in milliseconds before the recognition process is cancelled regardless of whether recognition was successful or not.  This setting applies only to video recognition.  Keep in mind that the timer starts after the first non-empty result. This behaviour ensures that the user has enough time to take out the document and place it in front of the camera device.                                                                                                                                                                                                                                                                            | `number`                     | `undefined` |
-| `recognizerOptions`                | --                                     | Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {    'BarcodeRecognizer': {      'slowerThoroughScan': true,    } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.                                                                            | `{ [key: string]: any; }`    | `undefined` |
+| `recognizerOptions`                | --                                     | Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {   'BarcodeRecognizer': {     'slowerThoroughScan': true,   } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.                                                                               | `{ [key: string]: any; }`    | `undefined` |
 | `recognizers`                      | --                                     | List of recognizers which should be used.  Available recognizers for BlinkInput:  - BarcodeRecognizer - SimNumberRecognizer - VinNumberRecognizer  Recognizers can be defined by setting JS property "recognizers", for example:  ``` const blinkInput = document.querySelector('blinkinput-in-browser'); blinkInput.recognizers = ['BarcodeRecognizer']; ```                                                                                                                                                                                                                                                                                                   | `string[]`                   | `undefined` |
 | `scanFromCamera`                   | `scan-from-camera`                     | Set to 'true' if scan from camera should be enabled. If set to 'true' and camera is not available or disabled, related button will be visible but disabled.  Default value is 'true'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `boolean`                    | `true`      |
 | `scanFromImage`                    | `scan-from-image`                      | Set to 'true' if scan from image should be enabled.  Default value is 'true'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `boolean`                    | `true`      |
@@ -47,10 +47,11 @@
 | Event               | Description                                                                                                                                                       | Type                            |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | `cameraScanStarted` | Event which is emitted when camera scan is started, i.e. when user clicks on _scan from camera_ button.                                                           | `CustomEvent<null>`             |
-| `fatalError`        | Event which is emitted during initialization of UI component.  Each event contains `code` property which has deatils about fatal errror.                          | `CustomEvent<EventFatalError>`  |
+| `fatalError`        | Event which is emitted during initialization of UI component.  Each event contains `code` property which has deatils about fatal errror.                          | `CustomEvent<SDKError>`         |
 | `feedback`          | Event which is emitted during positive or negative user feedback. If attribute/property `hideFeedback` is set to `false`, UI component will display the feedback. | `CustomEvent<FeedbackMessage>`  |
 | `imageScanStarted`  | Event which is emitted when image scan is started, i.e. when user clicks on _scan from gallery button.                                                            | `CustomEvent<null>`             |
 | `ready`             | Event which is emitted when UI component is successfully initialized and ready for use.                                                                           | `CustomEvent<EventReady>`       |
+| `scanAborted`       | Event which is emitted when scan is aborted, i.e. when user clicks on close from the gallery toolbar, or presses escape key.                                      | `CustomEvent<null>`             |
 | `scanError`         | Event which is emitted during or immediately after scan error.                                                                                                    | `CustomEvent<EventScanError>`   |
 | `scanSuccess`       | Event which is emitted after successful scan. This event contains recognition results.                                                                            | `CustomEvent<EventScanSuccess>` |
 
@@ -84,6 +85,26 @@ Type: `Promise<void>`
 
 
 
+### `startCameraScan() => Promise<void>`
+
+Starts camera scan using camera overlay with usage instructions.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `startImageScan(file: File) => Promise<void>`
+
+Starts image scan, emits results from provided file.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 
@@ -102,8 +123,6 @@ graph TD;
   mb-component --> mb-screen
   mb-component --> mb-spinner
   mb-component --> mb-button
-  mb-component --> mb-image-box
-  mb-component --> mb-button-classic
   mb-component --> mb-completed
   mb-component --> mb-overlay
   mb-component --> mb-modal

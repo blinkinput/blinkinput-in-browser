@@ -20,7 +20,7 @@ Using _BlinkInput_ in your web app requires a valid license key. You can obtain 
 
 For more information on how to integrate _BlinkInput_ SDK into your web app read the instructions below. Make sure you read the latest [CHANGELOG.md](CHANGELOG.md) file for most recent changes and improvements.
 
-Check out the [official demo app](https://demo.microblink.com/in-browser-sdk/blinkinput) or live examples of BlinkInput SDK in action:
+Check out the [official demo app](https://demo.microblink.com/in-browser-sdk/blinkinput) or live examples of BlinkInput SDK in action: 
 
 1. [BlinkInput SDK with built-in UI](https://blinkinput.github.io/blinkinput-in-browser/ui/demo.html)
     * See what the bare UI looks like at [Codepen](https://codepen.io/microblink/pen/qBRzEJM)
@@ -687,18 +687,6 @@ await BarcodeRecognizer.updateSettings( settings );
 ...
 ```
 
-<!--
-# TODO
-1. Guidelines regarding webcams
-    * Webcams on apple devices
-    * External webcams
-        * Logitech C922 Pro Stream (isprobano, radi odlično, Jurica)
-        * Logitech C920 Pro HD
-        * Logitech C270 HD (budget option)
-    * Built-in webcams, e.g. Lenovo and similar
-2. Guidelines regarding device performance
-3. Specific guidelines for Mac laptops and PCs?
--->
 ## <a name="technicalRequirements"></a> Technical requirements
 
 This document provides information about technical requirements of end-user devices to run BlinkInput.

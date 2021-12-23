@@ -5,7 +5,7 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
-import { CameraEntry, CameraExperience, CameraExperienceState, EventFatalError, EventReady, EventScanError, EventScanSuccess, FeedbackMessage } from "./utils/data-structures";
+import { CameraEntry, CameraExperience, CameraExperienceState, EventReady, EventScanError, EventScanSuccess, FeedbackMessage, SDKError } from "./utils/data-structures";
 import { TranslationService } from "./utils/translation.service";
 import { SdkService } from "./utils/sdk.service";
 export namespace Components {
@@ -95,7 +95,7 @@ export namespace Components {
          */
         "recognitionTimeout": number;
         /**
-          * Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {    'BarcodeRecognizer': {      'slowerThoroughScan': true,    } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.
+          * Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {   'BarcodeRecognizer': {     'slowerThoroughScan': true,   } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.
          */
         "recognizerOptions": { [key: string]: any };
         /**
@@ -134,6 +134,15 @@ export namespace Components {
           * Scan line animation option passed from root component.  Client can choose if scan line animation will be present in UI.  Default value is 'false'
          */
         "showScanningLine": boolean;
+        /**
+          * Starts camera scan using camera overlay with usage instructions.
+         */
+        "startCameraScan": () => Promise<void>;
+        /**
+          * Starts image scan, emits results from provided file.
+          * @param file File to scan
+         */
+        "startImageScan": (file: File) => Promise<void>;
         /**
           * Set custom translations for UI component. List of available translation keys can be found in `src/utils/translation.service.ts` file.
          */
@@ -408,6 +417,15 @@ export namespace Components {
           * See description in public component.
          */
         "showScanningLine": boolean;
+        /**
+          * Starts camera scan using camera overlay with usage instructions.
+         */
+        "startCameraScan": () => Promise<void>;
+        /**
+          * Starts image scan, emits results from provided file.
+          * @param file File to scan
+         */
+        "startImageScan": (file: File) => Promise<void>;
         /**
           * Instance of TranslationService passed from root component.
          */
@@ -685,7 +703,7 @@ declare namespace LocalJSX {
         /**
           * Event which is emitted during initialization of UI component.  Each event contains `code` property which has deatils about fatal errror.
          */
-        "onFatalError"?: (event: CustomEvent<EventFatalError>) => void;
+        "onFatalError"?: (event: CustomEvent<SDKError>) => void;
         /**
           * Event which is emitted during positive or negative user feedback. If attribute/property `hideFeedback` is set to `false`, UI component will display the feedback.
          */
@@ -698,6 +716,10 @@ declare namespace LocalJSX {
           * Event which is emitted when UI component is successfully initialized and ready for use.
          */
         "onReady"?: (event: CustomEvent<EventReady>) => void;
+        /**
+          * Event which is emitted when scan is aborted, i.e. when user clicks on close from the gallery toolbar, or presses escape key.
+         */
+        "onScanAborted"?: (event: CustomEvent<null>) => void;
         /**
           * Event which is emitted during or immediately after scan error.
          */
@@ -719,7 +741,7 @@ declare namespace LocalJSX {
          */
         "recognitionTimeout"?: number;
         /**
-          * Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {    'BarcodeRecognizer': {      'slowerThoroughScan': true,    } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.
+          * Specify recognizer options. This option can only bet set as a JavaScript property.  Pass an object to `recognizerOptions` property where each key represents a recognizer, while the value represents desired recognizer options.  ``` blinkInput.recognizerOptions = {   'BarcodeRecognizer': {     'slowerThoroughScan': true,   } } ```  For a full list of available recognizer options see source code of a recognizer. For example, list of available recognizer options for BarcodeRecognizer can be seen in the `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` file.
          */
         "recognizerOptions"?: { [key: string]: any };
         /**
@@ -991,13 +1013,17 @@ declare namespace LocalJSX {
          */
         "licenseKey"?: string;
         /**
+          * Event containing boolean which used to check whether component is blocked.
+         */
+        "onBlock"?: (event: CustomEvent<boolean>) => void;
+        /**
           * See event 'cameraScanStarted' in public component.
          */
         "onCameraScanStarted"?: (event: CustomEvent<null>) => void;
         /**
           * See event 'fatalError' in public component.
          */
-        "onFatalError"?: (event: CustomEvent<EventFatalError>) => void;
+        "onFatalError"?: (event: CustomEvent<SDKError>) => void;
         /**
           * Event containing FeedbackMessage which can be passed to MbFeedback component.
          */
@@ -1010,6 +1036,10 @@ declare namespace LocalJSX {
           * See event 'ready' in public component.
          */
         "onReady"?: (event: CustomEvent<EventReady>) => void;
+        /**
+          * See event 'scanAborted' in public component.
+         */
+        "onScanAborted"?: (event: CustomEvent<null>) => void;
         /**
           * See event 'scanError' in public component.
          */
