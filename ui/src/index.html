@@ -49,34 +49,31 @@
     </style>
   </head>
   <body>
-    <blinkinput-in-browser
-      engine-location="http://localhost:3333/resources"
-      license-key="sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e"
-      recognizers="BarcodeRecognizer"
-    ></blinkinput-in-browser>
+    <blinkinput-in-browser engine-location="http://localhost:3333/resources" license-key="sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8k9Zh/FJlqlK3mOMXCWz8lbKszGvAWytAkssgJMp7EeBVveQ2zIKczDEE0r04+P6TSGxLZHSDFEczBocKT3MN4BbX9c36xKBkakhg2pkZ2rDDc63V++UkA0I4I2Emul+mF8MX0NHkGmlJtYtZ6/+EC1GjE3daaPufKZQ/j03oKahMdGxZduGaIrgyuMU8L0QUb2jdAMPfzKoIGrN3vgrZ5Dz4MsaU5Z" recognizers="BarcodeRecognizer"></blinkinput-in-browser>
 
     <script type="text/javascript">
-      const blinkInput = document.querySelector('blinkinput-in-browser');
 
-      blinkInput.addEventListener('fatalError', ev => {
-        console.log('fatalError', ev.detail);
-      });
+const blinkInput = document.querySelector('blinkinput-in-browser');
 
-      blinkInput.addEventListener('ready', ev => {
-        console.log('ready', ev.detail);
-      });
+blinkInput.addEventListener('fatalError', (ev) => {
+  console.log('fatalError', ev.detail);
+});
 
-      blinkInput.addEventListener('scanError', ev => {
-        console.log('scanError', ev.detail);
-      });
+blinkInput.addEventListener('ready', (ev) => {
+  console.log('ready', ev.detail);
+});
 
-      blinkInput.addEventListener('scanSuccess', ev => {
-        console.log('scanSuccess', ev.detail);
-      });
+blinkInput.addEventListener('scanError', (ev) => {
+  console.log('scanError', ev.detail);
+});
 
-      blinkInput.addEventListener('feedback', ev => {
-        console.log('feedback', ev.detail);
-      });
-    </script>
+blinkInput.addEventListener('scanSuccess', (ev) => {
+  console.log('scanSuccess', ev.detail);
+});
+
+blinkInput.addEventListener('feedback', (ev) => {
+  console.log('feedback', ev.detail);
+});
+</script>
   </body>
 </html>

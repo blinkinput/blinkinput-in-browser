@@ -45,11 +45,13 @@
 
 | Event               | Description                                                                   | Type                            |
 | ------------------- | ----------------------------------------------------------------------------- | ------------------------------- |
+| `block`             | Event containing boolean which used to check whether component is blocked.    | `CustomEvent<boolean>`          |
 | `cameraScanStarted` | See event 'cameraScanStarted' in public component.                            | `CustomEvent<null>`             |
-| `fatalError`        | See event 'fatalError' in public component.                                   | `CustomEvent<EventFatalError>`  |
+| `fatalError`        | See event 'fatalError' in public component.                                   | `CustomEvent<SDKError>`         |
 | `feedback`          | Event containing FeedbackMessage which can be passed to MbFeedback component. | `CustomEvent<FeedbackMessage>`  |
 | `imageScanStarted`  | See event 'imageScanStarted' in public component.                             | `CustomEvent<null>`             |
 | `ready`             | See event 'ready' in public component.                                        | `CustomEvent<EventReady>`       |
+| `scanAborted`       | See event 'scanAborted' in public component.                                  | `CustomEvent<null>`             |
 | `scanError`         | See event 'scanError' in public component.                                    | `CustomEvent<EventScanError>`   |
 | `scanSuccess`       | See event 'scanSuccess' in public component.                                  | `CustomEvent<EventScanSuccess>` |
 
@@ -69,6 +71,26 @@ Type: `Promise<void>`
 
 
 
+### `startCameraScan() => Promise<void>`
+
+Starts camera scan using camera overlay with usage instructions.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `startImageScan(file: File) => Promise<void>`
+
+Starts image scan, emits results from provided file.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 
 ## Dependencies
 
@@ -81,8 +103,6 @@ Type: `Promise<void>`
 - [mb-screen](../mb-screen)
 - [mb-spinner](../mb-spinner)
 - [mb-button](../mb-button)
-- [mb-image-box](../mb-image-box)
-- [mb-button-classic](../mb-button-classic)
 - [mb-completed](../mb-completed)
 - [mb-overlay](../mb-overlay)
 - [mb-modal](../mb-modal)
@@ -95,8 +115,6 @@ graph TD;
   mb-component --> mb-screen
   mb-component --> mb-spinner
   mb-component --> mb-button
-  mb-component --> mb-image-box
-  mb-component --> mb-button-classic
   mb-component --> mb-completed
   mb-component --> mb-overlay
   mb-component --> mb-modal

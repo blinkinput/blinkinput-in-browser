@@ -3,3 +3,4 @@
  */
 
 export const defaultWasmModuleName = "BlinkInputWasmSDK";
+export const nativeJsonizationEnabled = false;

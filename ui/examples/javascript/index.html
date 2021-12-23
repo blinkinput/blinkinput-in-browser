@@ -7,7 +7,7 @@
 
         <!-- Import UI component which includes WASM library -->
         <!-- Keep in mind that Unpkg CDN is used for demonstration, it's not intended to be used in production! -->
-        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.3/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
+        <script type="module" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.4/ui/dist/blinkinput-in-browser/blinkinput-in-browser.esm.js"></script>
 
         <style type="text/css">
             html,
@@ -52,78 +52,76 @@
     </head>
     <body>
         <!-- It's possible to obtain a free trial license key on microblink.com -->
-        <blinkinput-in-browser
-            license-key="sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e"
-            recognizers="BarcodeRecognizer"
-        ></blinkinput-in-browser>
+        <blinkinput-in-browser license-key="sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8k9Zh/FJlqlK3mOMXCWz8lbKszGvAWytAkssgJMp7EeBVveQ2zIKczDEE0r04+P6TSGxLZHSDFEczBocKT3MN4BbX9c36xKBkakhg2pkZ2rDDc63V++UkA0I4I2Emul+mF8MX0NHkGmlJtYtZ6/+EC1GjE3daaPufKZQ/j03oKahMdGxZduGaIrgyuMU8L0QUb2jdAMPfzKoIGrN3vgrZ5Dz4MsaU5Z" recognizers="BarcodeRecognizer"></blinkinput-in-browser>
 
         <script type="text/javascript">
-            function run()
-            {
-                // Important: if attributes or properties are changed, whole component is rerendered
-                const blinkInput = document.querySelector( "blinkinput-in-browser" );
 
-                if ( window.location.hostname === "blinkinput.github.io" )
-                {
-                    blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6lL3KepeLT/f3k8KEIgnpLGwKJroAvIhreH7baTWySEfwLKYZEUTY0IIqG3V1D8jclz5suOK5voJ0IAioSa9IhSO9ee0y/rvIwcTJ6nqcA5wbCNHMJSO8yOEiy6mOJZEqIFJ14o6DDxR7eDmMcV7r8H15+1U7x3QCN6TP/MNrXVTvWUyaXsx4lWSbYWA2aseF4LK/NWIbxUJXbfD6++cx5hPdtKn86i0=";
-                }
+function run()
+{
+  // Important: if attributes or properties are changed, whole component is rerendered
+  const blinkInput = document.querySelector("blinkinput-in-browser");
 
-                blinkInput.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
+  if (window.location.hostname === "blinkinput.github.io")
+  {
+    blinkInput.licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6nJNh+6rJ8S3Yq2HHmQPB6405wLx60qqG1B3OGwOHRQDpEep2XwOCAgaXFvBHtovXSq7c6pMx0nATl7KjxaCvscbgXIHI/FRwJJH7a5n1UlaCMs5XcG4NK1LZAIA56YJN/18B15y15h3EvRoGTXDd0trL872WwJdMQqxbyo8bI4tyb4gb03pvapF1z9mexmNks+zSS/i897UGxJjMFaqzTWc4PH66DXo=";
+  }
 
-                blinkInput.recognizerOptions = {
-                    "BarcodeRecognizer": {
-                        shouldScanInverse: true,
-                        slowerThoroughScan: true,
-                        nullQuietZoneAllowed: false,
-                        uncertainDecodingAllowed: false,
-                        useAutoScale: true,
-                        readCode39AsExtendedData: true,
-                        scanAztec: true,
-                        scanCode128: true,
-                        scanCode39: true,
-                        scanDataMatrix: true,
-                        scanEAN13: true,
-                        scanEAN8: false,
-                        scanITF: false,
-                        scanPDF417: true,
-                        scanQRCode: true,
-                        scanUPCA: false,
-                        scanUPCE: false
-                    }
-                };
+  blinkInput.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
 
-                blinkInput.addEventListener
-                (
-                    "fatalError",
-                    ev => console.log( "fatalError", ev.detail )
-                );
+  blinkInput.recognizerOptions = {
+    "BarcodeRecognizer": {
+      shouldScanInverse: true,
+      slowerThoroughScan: true,
+      nullQuietZoneAllowed: false,
+      uncertainDecodingAllowed: false,
+      useAutoScale: true,
+      readCode39AsExtendedData: true,
+      scanAztec: true,
+      scanCode128: true,
+      scanCode39: true,
+      scanDataMatrix: true,
+      scanEAN13: true,
+      scanEAN8: false,
+      scanITF: false,
+      scanPDF417: true,
+      scanQRCode: true,
+      scanUPCA: false,
+      scanUPCE: false } };
 
-                blinkInput.addEventListener
-                (
-                    "ready",
-                    ev => console.log( "ready", ev.detail )
-                );
 
-                blinkInput.addEventListener
-                (
-                    "scanError",
-                    ev => console.log( "scanError", ev.detail )
-                );
 
-                blinkInput.addEventListener
-                (
-                    "scanSuccess",
-                    ev => console.log( "scanSuccess", ev.detail )
-                );
+  blinkInput.addEventListener(
 
-                blinkInput.addEventListener
-                (
-                    "feedback",
-                    ev => console.log( "feedback", ev.detail )
-                );
-            }
+  "fatalError",
+  (ev) => console.log("fatalError", ev.detail));
 
-            window.addEventListener( "DOMContentLoaded", ev => run() );
-        </script>
+
+  blinkInput.addEventListener(
+
+  "ready",
+  (ev) => console.log("ready", ev.detail));
+
+
+  blinkInput.addEventListener(
+
+  "scanError",
+  (ev) => console.log("scanError", ev.detail));
+
+
+  blinkInput.addEventListener(
+
+  "scanSuccess",
+  (ev) => console.log("scanSuccess", ev.detail));
+
+
+  blinkInput.addEventListener(
+
+  "feedback",
+  (ev) => console.log("feedback", ev.detail));
+
+}
+
+window.addEventListener("DOMContentLoaded", (ev) => run());
+</script>
     </body>
 </html>

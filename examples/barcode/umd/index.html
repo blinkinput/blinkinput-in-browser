@@ -24,277 +24,270 @@
     </body>
 
     <!-- Keep in mind that Unpkg CDN is used for demonstration, it's not intended to be used in production! -->
-    <script type="text/javascript" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.3/dist/blinkinput-sdk.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@microblink/blinkinput-in-browser-sdk@4.4.4/dist/blinkinput-sdk.js"></script>
     <script type="text/javascript">
-    /**
-     * BlinkInput In-browser SDK demo app which demonstrates how to:
-     *
-     * - Change default SDK settings
-     * - Scan barcode
-     * - Provide visual feedback to the end-user during the scan
-     */
 
-    // General UI helpers
-    const initialMessageEl = document.getElementById( "msg" );
-    const progressEl = document.getElementById( "load-progress" );
+/**
+ * BlinkInput In-browser SDK demo app which demonstrates how to:
+ *
+ * - Change default SDK settings
+ * - Scan barcode
+ * - Provide visual feedback to the end-user during the scan
+ */
 
-    // UI elements for scanning feedback
-    const cameraFeed = document.getElementById( "camera-feed" );
-    const cameraFeedback = document.getElementById( "camera-feedback" );
-    const drawContext = cameraFeedback.getContext( "2d" );
+// General UI helpers
+const initialMessageEl = document.getElementById("msg");
+const progressEl = document.getElementById("load-progress");
 
-    /**
-     * Initialize and load WASM SDK.
-     */
-    function main()
+// UI elements for scanning feedback
+const cameraFeed = document.getElementById("camera-feed");
+const cameraFeedback = document.getElementById("camera-feedback");
+const drawContext = cameraFeedback.getContext("2d");
+
+/**
+ * Initialize and load WASM SDK.
+ */
+function main()
+{
+  // Check if browser has proper support for WebAssembly
+  if (!BlinkInputSDK.isBrowserSupported())
+  {
+    initialMessageEl.innerText = "This browser is not supported!";
+    return;
+  }
+
+  // 1. It's possible to obtain a free trial license key on microblink.com
+  let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8k9Zh/FJlqlK3mOMXCWz8lbKszGvAWytAkssgJMp7EeBVveQ2zIKczDEE0r04+P6TSGxLZHSDFEczBocKT3MN4BbX9c36xKBkakhg2pkZ2rDDc63V++UkA0I4I2Emul+mF8MX0NHkGmlJtYtZ6/+EC1GjE3daaPufKZQ/j03oKahMdGxZduGaIrgyuMU8L0QUb2jdAMPfzKoIGrN3vgrZ5Dz4MsaU5Z";
+
+  if (window.location.hostname === "blinkinput.github.io")
+  {
+    licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6nJNh+6rJ8S3Yq2HHmQPB6405wLx60qqG1B3OGwOHRQDpEep2XwOCAgaXFvBHtovXSq7c6pMx0nATl7KjxaCvscbgXIHI/FRwJJH7a5n1UlaCMs5XcG4NK1LZAIA56YJN/18B15y15h3EvRoGTXDd0trL872WwJdMQqxbyo8bI4tyb4gb03pvapF1z9mexmNks+zSS/i897UGxJjMFaqzTWc4PH66DXo=";
+  }
+
+  // 2. Create instance of SDK load settings with your license key
+  const loadSettings = new BlinkInputSDK.WasmSDKLoadSettings(licenseKey);
+
+  // [OPTIONAL] Change default settings
+
+  // Show or hide hello message in browser console when WASM is successfully loaded
+  loadSettings.allowHelloMessage = true;
+
+  // In order to provide better UX, display progress bar while loading the SDK
+  loadSettings.loadProgressCallback = (progress) => progressEl.value = progress;
+
+  // Set absolute location of the engine, i.e. WASM and support JS files
+  loadSettings.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
+
+  // 3. Load SDK
+  BlinkInputSDK.loadWasmModule(loadSettings).then(
+
+  (sdk) =>
+  {
+    document.getElementById("screen-initial")?.classList.add("hidden");
+    document.getElementById("screen-start")?.classList.remove("hidden");
+    document.getElementById("start-scan")?.addEventListener("click", (ev) =>
     {
-        // Check if browser has proper support for WebAssembly
-        if ( !BlinkInputSDK.isBrowserSupported() )
-        {
-            initialMessageEl.innerText = "This browser is not supported!";
-            return;
-        }
+      ev.preventDefault();
+      startScan(sdk);
+    });
+  },
+  (error) =>
+  {
+    initialMessageEl.innerText = "Failed to load SDK!";
+    console.error("Failed to load SDK!", error);
+  });
 
-        // 1. It's possible to obtain a free trial license key on microblink.com
-        let licenseKey = "sRwAAAYJbG9jYWxob3N0r/lOPmg/w35CpCHVK8ETze7K6Sabx+JpkJta2XZrNcZecjiVK3kNhHD1+35RKWAHd+6wyWq/SMxSdmrbjG88//CGYKnIsJogOU7RMDWsngkZMJkJ+/2ddBCG4tMBuXGDjgvrO/Vu6exbHucwPGkTnkvpIL0OnwX1EW5LakQhDqEJDs8WxHZV+2zFN6tDXtR2d4UsRKINubo7zN/NxbwppMoaWuDwRlYy9t2c0idCSAU9kg+e";
+}
 
-        if ( window.location.hostname === "blinkinput.github.io" )
-        {
-            licenseKey = "sRwAAAYUYmxpbmtpbnB1dC5naXRodWIuaW+krJ01WbUhltWc6oJ6lL3KepeLT/f3k8KEIgnpLGwKJroAvIhreH7baTWySEfwLKYZEUTY0IIqG3V1D8jclz5suOK5voJ0IAioSa9IhSO9ee0y/rvIwcTJ6nqcA5wbCNHMJSO8yOEiy6mOJZEqIFJ14o6DDxR7eDmMcV7r8H15+1U7x3QCN6TP/MNrXVTvWUyaXsx4lWSbYWA2aseF4LK/NWIbxUJXbfD6++cx5hPdtKn86i0=";
-        }
+/**
+ * Scan PDF417 barcode.
+ */
+async function startScan(sdk)
+{
+  document.getElementById("screen-start")?.classList.add("hidden");
+  document.getElementById("screen-scanning")?.classList.remove("hidden");
 
-        // 2. Create instance of SDK load settings with your license key
-        const loadSettings = new BlinkInputSDK.WasmSDKLoadSettings( licenseKey );
+  // 1. Create a recognizer objects which will be used to recognize single image or stream of images.
+  //
+  // In this example, we create a BarcodeRecognizer, which knows how to scan barcodes and extracts information from them.
+  const barcodeRecognizer = await BlinkInputSDK.createBarcodeRecognizer(sdk);
 
-        /* [TEMPORARY FIX]
-         * Use basic WebAssembly builds since most performant option requires server setup and unpkg.com, which is used
-         * for examples, doesn't support COOP and COEP headers.
-         *
-         * For more information see "Integration" section in the official documentation.
-         */
-        loadSettings.wasmType = "BASIC";
+  // 1.1 Update recognizer settings to define what should be scanned
+  //
+  // See file `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` for list of all options
+  const currentSettings = await barcodeRecognizer.currentSettings();
 
-        // [OPTIONAL] Change default settings
+  currentSettings.scanPDF417 = true;
 
-        // Show or hide hello message in browser console when WASM is successfully loaded
-        loadSettings.allowHelloMessage = true;
+  await barcodeRecognizer.updateSettings(currentSettings);
 
-        // In order to provide better UX, display progress bar while loading the SDK
-        loadSettings.loadProgressCallback = ( progress ) => ( progressEl.value = progress );
+  // [OPTIONAL] Create a callbacks object that will receive recognition events, such as detected object location etc.
+  const callbacks = {
+    onQuadDetection: (quad) => drawQuad(quad) };
 
-        // Set absolute location of the engine, i.e. WASM and support JS files
-        loadSettings.engineLocation = "https://blinkinput.github.io/blinkinput-in-browser/resources";
 
-        // 3. Load SDK
-        BlinkInputSDK.loadWasmModule( loadSettings ).then
-        (
-            sdk =>
-            {
-                document.getElementById( "screen-initial" )?.classList.add( "hidden" );
-                document.getElementById( "screen-start" )?.classList.remove( "hidden" );
-                document.getElementById( "start-scan" )?.addEventListener( "click", ev =>
-                {
-                    ev.preventDefault();
-                    startScan( sdk );
-                });
-            },
-            error =>
-            {
-                initialMessageEl.innerText = "Failed to load SDK!";
-                console.error( "Failed to load SDK!", error );
-            }
-        );
-    }
+  // 2. Create a RecognizerRunner object which orchestrates the recognition with one or more
+  //    recognizer objects.
+  const recognizerRunner = await BlinkInputSDK.createRecognizerRunner(
 
-    /**
-     * Scan PDF417 barcode.
-     */
-    async function startScan( sdk )
+  // SDK instance to use
+  sdk,
+  // List of recognizer objects that will be associated with created RecognizerRunner object
+  [barcodeRecognizer],
+  // [OPTIONAL] Should recognition pipeline stop as soon as first recognizer in chain finished recognition
+  false,
+  // [OPTIONAL] Callbacks object that will receive recognition events
+  callbacks);
+
+
+  // 3. Create a VideoRecognizer object and attach it to HTMLVideoElement that will be used for displaying the camera feed
+  const videoRecognizer = await BlinkInputSDK.VideoRecognizer.createVideoRecognizerFromCameraStream(
+
+  cameraFeed,
+  recognizerRunner);
+
+
+  // 4. Start the recognition and await for the results
+  const processResult = await videoRecognizer.recognize();
+
+  // 5. If recognition was successful, obtain the result and display it
+  if (processResult !== BlinkInputSDK.RecognizerResultState.Empty)
+  {
+    const barcodeResult = await barcodeRecognizer.getResult();
+    if (barcodeResult.state !== BlinkInputSDK.RecognizerResultState.Empty)
     {
-        document.getElementById( "screen-start" )?.classList.add( "hidden" );
-        document.getElementById( "screen-scanning" )?.classList.remove( "hidden" );
-
-        // 1. Create a recognizer objects which will be used to recognize single image or stream of images.
-        //
-        // In this example, we create a BarcodeRecognizer, which knows how to scan barcodes and extracts information from them.
-        const barcodeRecognizer = await BlinkInputSDK.createBarcodeRecognizer( sdk );
-
-        // 1.1 Update recognizer settings to define what should be scanned
-        //
-        // See file `src/Recognizers/BlinkBarcode/BarcodeRecognizer.ts` for list of all options
-        const currentSettings = await barcodeRecognizer.currentSettings();
-
-        currentSettings.scanPDF417 = true;
-
-        await barcodeRecognizer.updateSettings( currentSettings );
-
-        // [OPTIONAL] Create a callbacks object that will receive recognition events, such as detected object location etc.
-        const callbacks = {
-            onQuadDetection: quad => drawQuad( quad )
-        }
-
-        // 2. Create a RecognizerRunner object which orchestrates the recognition with one or more
-        //    recognizer objects.
-        const recognizerRunner = await BlinkInputSDK.createRecognizerRunner
-        (
-            // SDK instance to use
-            sdk,
-            // List of recognizer objects that will be associated with created RecognizerRunner object
-            [ barcodeRecognizer ],
-            // [OPTIONAL] Should recognition pipeline stop as soon as first recognizer in chain finished recognition
-            false,
-            // [OPTIONAL] Callbacks object that will receive recognition events
-            callbacks
-        );
-
-        // 3. Create a VideoRecognizer object and attach it to HTMLVideoElement that will be used for displaying the camera feed
-        const videoRecognizer = await BlinkInputSDK.VideoRecognizer.createVideoRecognizerFromCameraStream
-        (
-            cameraFeed,
-            recognizerRunner
-        );
-
-        // 4. Start the recognition and await for the results
-        const processResult = await videoRecognizer.recognize();
-
-        // 5. If recognition was successful, obtain the result and display it
-        if ( processResult !== BlinkInputSDK.RecognizerResultState.Empty )
-        {
-            const barcodeResult = await barcodeRecognizer.getResult();
-            if ( barcodeResult.state !== BlinkInputSDK.RecognizerResultState.Empty )
-            {
-                console.log( "Barcode result", barcodeResult );
-                alert( "Scan successful, see browser console for full object!" );
-            }
-        }
-        else
-        {
-            alert( "Could not extract information!" );
-        }
-
-        // 7. Release all resources allocated on the WebAssembly heap and associated with camera stream
-
-        // Release browser resources associated with the camera stream
-        videoRecognizer?.releaseVideoFeed();
-
-        // Release memory on WebAssembly heap used by the RecognizerRunner
-        recognizerRunner?.delete();
-
-        // Release memory on WebAssembly heap used by the recognizer
-        barcodeRecognizer?.delete();
-
-        // Clear any leftovers drawn to canvas
-        clearDrawCanvas();
-
-        // Hide scanning screen and show scan button again
-        document.getElementById( "screen-start" )?.classList.remove( "hidden" );
-        document.getElementById( "screen-scanning" )?.classList.add( "hidden" );
+      console.log("Barcode result", barcodeResult);
+      alert("Scan successful, see browser console for full object!");
     }
+  } else
 
-    /**
-     * Utility functions for drawing detected quadrilateral onto canvas.
-     */
-    function drawQuad( quad )
-    {
-        clearDrawCanvas();
+  {
+    alert("Could not extract information!");
+  }
 
-        // Based on detection status, show appropriate color and message
-        setupColor( quad );
+  // 7. Release all resources allocated on the WebAssembly heap and associated with camera stream
 
-        applyTransform( quad.transformMatrix );
-        drawContext.beginPath();
-        drawContext.moveTo( quad.topLeft    .x, quad.topLeft    .y );
-        drawContext.lineTo( quad.topRight   .x, quad.topRight   .y );
-        drawContext.lineTo( quad.bottomRight.x, quad.bottomRight.y );
-        drawContext.lineTo( quad.bottomLeft .x, quad.bottomLeft .y );
-        drawContext.closePath();
-        drawContext.stroke();
-    }
+  // Release browser resources associated with the camera stream
+  videoRecognizer?.releaseVideoFeed();
 
-    /**
-     * This function will make sure that coordinate system associated with detectionResult
-     * canvas will match the coordinate system of the image being recognized.
-     */
-    function applyTransform( transformMatrix )
-    {
-        const canvasAR = cameraFeedback.width / cameraFeedback.height;
-        const videoAR = cameraFeed.videoWidth / cameraFeed.videoHeight;
+  // Release memory on WebAssembly heap used by the RecognizerRunner
+  recognizerRunner?.delete();
 
-        let xOffset = 0;
-        let yOffset = 0;
-        let scaledVideoHeight = 0
-        let scaledVideoWidth = 0
+  // Release memory on WebAssembly heap used by the recognizer
+  barcodeRecognizer?.delete();
 
-        if ( canvasAR > videoAR )
-        {
-            // pillarboxing: https://en.wikipedia.org/wiki/Pillarbox
-            scaledVideoHeight = cameraFeedback.height;
-            scaledVideoWidth = videoAR * scaledVideoHeight;
-            xOffset = ( cameraFeedback.width - scaledVideoWidth ) / 2.0;
-        }
-        else
-        {
-            // letterboxing: https://en.wikipedia.org/wiki/Letterboxing_(filming)
-            scaledVideoWidth = cameraFeedback.width;
-            scaledVideoHeight = scaledVideoWidth / videoAR;
-            yOffset = ( cameraFeedback.height - scaledVideoHeight ) / 2.0;
-        }
+  // Clear any leftovers drawn to canvas
+  clearDrawCanvas();
 
-        // first transform canvas for offset of video preview within the HTML video element (i.e. correct letterboxing or pillarboxing)
-        drawContext.translate( xOffset, yOffset );
-        // second, scale the canvas to fit the scaled video
-        drawContext.scale
-        (
-            scaledVideoWidth / cameraFeed.videoWidth,
-            scaledVideoHeight / cameraFeed.videoHeight
-        );
+  // Hide scanning screen and show scan button again
+  document.getElementById("screen-start")?.classList.remove("hidden");
+  document.getElementById("screen-scanning")?.classList.add("hidden");
+}
 
-        // finally, apply transformation from image coordinate system to
-        // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
-        drawContext.transform
-        (
-            transformMatrix[0],
-            transformMatrix[3],
-            transformMatrix[1],
-            transformMatrix[4],
-            transformMatrix[2],
-            transformMatrix[5]
-        );
-    }
+/**
+ * Utility functions for drawing detected quadrilateral onto canvas.
+ */
+function drawQuad(quad)
+{
+  clearDrawCanvas();
 
-    function clearDrawCanvas()
-    {
-        cameraFeedback.width = cameraFeedback.clientWidth;
-        cameraFeedback.height = cameraFeedback.clientHeight;
+  // Based on detection status, show appropriate color and message
+  setupColor(quad);
 
-        drawContext.clearRect
-        (
-            0,
-            0,
-            cameraFeedback.width,
-            cameraFeedback.height
-        );
-    }
+  applyTransform(quad.transformMatrix);
+  drawContext.beginPath();
+  drawContext.moveTo(quad.topLeft.x, quad.topLeft.y);
+  drawContext.lineTo(quad.topRight.x, quad.topRight.y);
+  drawContext.lineTo(quad.bottomRight.x, quad.bottomRight.y);
+  drawContext.lineTo(quad.bottomLeft.x, quad.bottomLeft.y);
+  drawContext.closePath();
+  drawContext.stroke();
+}
 
-    function setupColor( displayable )
-    {
-        let color = "#FFFF00FF";
+/**
+ * This function will make sure that coordinate system associated with detectionResult
+ * canvas will match the coordinate system of the image being recognized.
+ */
+function applyTransform(transformMatrix)
+{
+  const canvasAR = cameraFeedback.width / cameraFeedback.height;
+  const videoAR = cameraFeed.videoWidth / cameraFeed.videoHeight;
 
-        if ( displayable.detectionStatus === 0 )
-        {
-            color = "#FF0000FF";
-        }
-        else if ( displayable.detectionStatus === 1 )
-        {
-            color = "#00FF00FF";
-        }
+  let xOffset = 0;
+  let yOffset = 0;
+  let scaledVideoHeight = 0;
+  let scaledVideoWidth = 0;
 
-        drawContext.fillStyle = color;
-        drawContext.strokeStyle = color;
-        drawContext.lineWidth = 5;
-    }
+  if (canvasAR > videoAR)
+  {
+    // pillarboxing: https://en.wikipedia.org/wiki/Pillarbox
+    scaledVideoHeight = cameraFeedback.height;
+    scaledVideoWidth = videoAR * scaledVideoHeight;
+    xOffset = (cameraFeedback.width - scaledVideoWidth) / 2.0;
+  } else
 
-    // Run
-    main();
-    </script>
+  {
+    // letterboxing: https://en.wikipedia.org/wiki/Letterboxing_(filming)
+    scaledVideoWidth = cameraFeedback.width;
+    scaledVideoHeight = scaledVideoWidth / videoAR;
+    yOffset = (cameraFeedback.height - scaledVideoHeight) / 2.0;
+  }
+
+  // first transform canvas for offset of video preview within the HTML video element (i.e. correct letterboxing or pillarboxing)
+  drawContext.translate(xOffset, yOffset);
+  // second, scale the canvas to fit the scaled video
+  drawContext.scale(
+
+  scaledVideoWidth / cameraFeed.videoWidth,
+  scaledVideoHeight / cameraFeed.videoHeight);
+
+
+  // finally, apply transformation from image coordinate system to
+  // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/setTransform
+  drawContext.transform(
+
+  transformMatrix[0],
+  transformMatrix[3],
+  transformMatrix[1],
+  transformMatrix[4],
+  transformMatrix[2],
+  transformMatrix[5]);
+
+}
+
+function clearDrawCanvas()
+{
+  cameraFeedback.width = cameraFeedback.clientWidth;
+  cameraFeedback.height = cameraFeedback.clientHeight;
+
+  drawContext.clearRect(
+
+  0,
+  0,
+  cameraFeedback.width,
+  cameraFeedback.height);
+
+}
+
+function setupColor(displayable)
+{
+  let color = "#FFFF00FF";
+
+  if (displayable.detectionStatus === 0)
+  {
+    color = "#FF0000FF";
+  } else
+  if (displayable.detectionStatus === 1)
+  {
+    color = "#00FF00FF";
+  }
+
+  drawContext.fillStyle = color;
+  drawContext.strokeStyle = color;
+  drawContext.lineWidth = 5;
+}
+
+// Run
+main();
+</script>
 </html>
