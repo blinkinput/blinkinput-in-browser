@@ -19,6 +19,6 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "@microblink/blinkinput-in-browser-sdk": "~4.4.4"
+    "@microblink/blinkinput-in-browser-sdk": "~4.4.5"
   }
 }
