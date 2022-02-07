@@ -1,5 +1,9 @@
 # Release notes
 
+## 4.4.5
+
+* We've updated Microblink logo and colors
+
 ## 4.4.4
 
 ### Platform-related SDK changes
