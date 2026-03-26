@@ -1,3 +1,12 @@
+# ⚠️ Disclaimer
+> Please note that Microblink is no longer maintaining this repository.\
+As such, there will be no additional updates or releases for this codebase. You are welcome to continue using the code, as it remains source available.\
+Furthermore, if you need to update it for a newer SDK or platform version, you can do so by forking this repository and maintaining the fork independently.\
+If you have questions regarding such, please contact our support team at support@microblink.com.
+
+---
+
+
 # _BlinkInput_ In-browser SDK
 
 [![Build Status](https://travis-ci.org/BlinkInput/blinkinput-in-browser.svg?branch=master)](https://travis-ci.org/BlinkInput/blinkinput-in-browser) [![npm version](https://badge.fury.io/js/%40microblink%2Fblinkinput-in-browser-sdk.svg)](https://badge.fury.io/js/%40microblink%2Fblinkinput-in-browser-sdk)
